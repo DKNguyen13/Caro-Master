@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class GameController : Singleton <GameController>
@@ -6,9 +7,12 @@ public class GameController : Singleton <GameController>
     [SerializeField] private int[,] _board;
     [SerializeField] private int _turn = 0;
 
+    [SerializeField] private TextMeshProUGUI _turnText;
+
     void Start()
     {
         InitBoard();
+        SetTurnText();
     }
 
     void Update()
@@ -39,8 +43,9 @@ public class GameController : Singleton <GameController>
             Debug.LogError($"Player value with position [{x}, {y}] out board");
         }
         _turn++;
+        SetTurnText();
         _board[x, y] = value; //value 0 init, 1 player, 2 AI
-        Debug.Log($"Mark position {x},{y}");
+        //Debug.Log($"Mark position {x},{y} and turn {_turn}");
     }
 
     public int GetCell(int x, int y)
@@ -51,6 +56,11 @@ public class GameController : Singleton <GameController>
             return -999;
         }
         return _board[x, y];
+    }
+
+    public void SetTurnText()
+    {
+        _turnText.text = "Turn " + _turn;
     }
     #endregion
 
