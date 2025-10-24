@@ -1,27 +1,61 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class GameController : Singleton <GameController>
 {
-    public static GameController Instance { get; private set; }
+    [SerializeField] private int _cellQuantity = 9;
+    [SerializeField] private int[,] _board;
+    [SerializeField] private int _turn = 0;
 
     void Start()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        InitBoard();
     }
 
     void Update()
     {
-        
+
     }
+
+    #region Init board
+    private void InitBoard()
+    {
+        _board = new int[_cellQuantity, _cellQuantity];
+        for (int x = 0; x < _cellQuantity; x++)
+        {
+            for (int y = 0; y < _cellQuantity; y++)
+            {
+                _board[x, y] = 0;
+            }
+        }
+        Debug.Log($"Init board {_cellQuantity} x {_cellQuantity}");
+    }
+    #endregion
+
+    #region Set cell
+    public void SetCell(int x, int y, int value)
+    {
+        if (x < 0 || y < 0 || x >= _cellQuantity || y >= _cellQuantity)
+        {
+            Debug.LogError($"Player value with position [{x}, {y}] out board");
+        }
+        _turn++;
+        _board[x, y] = value; //value 0 init, 1 player, 2 AI
+        Debug.Log($"Mark position {x},{y}");
+    }
+
+    public int GetCell(int x, int y)
+    {
+        if (x < 0 || y < 0 || x >= _cellQuantity || y >= _cellQuantity)
+        {
+            Debug.LogError($"Player value with position [{x}, {y}] out board");
+            return -999;
+        }
+        return _board[x, y];
+    }
+    #endregion
+
+    // Getter, setter
+    public int CellQuantity => _cellQuantity;
+    public int[,] GetBoard => _board;
+    public int GetTurn => _turn;
 }
