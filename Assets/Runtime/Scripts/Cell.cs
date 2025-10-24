@@ -35,7 +35,11 @@ public class Cell : MonoBehaviour
     private void handleOnClick()
     {
         if (_isMarket) return;
-        Debug.Log($"Postion {_x},{_y}");
+        int value = GameController.Instance.GetTurn % 2 == 0 ? 1 : 2;
+        Debug.LogWarning(value);
+        GameController.Instance.SetCell(_x, _y, value);
+        setMark(value);
+        //Debug.Log($"Postion {_x},{_y}");
     }
 
     public void setMark(int value)
@@ -47,7 +51,7 @@ public class Cell : MonoBehaviour
         }
         else
         {
-            _cellImage.sprite = _xIcon;
+            _cellImage.sprite = _oIcon;
         }
     }
     #endregion
