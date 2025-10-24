@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,27 +5,25 @@ public class Board : MonoBehaviour
 {
     [SerializeField] private Transform _boardTransform;
     [SerializeField] private GridLayoutGroup _boardGridLayoutGroup;
-    [SerializeField] private GameObject _cell;
-    [SerializeField] private int _boardCell = 9;
+    [SerializeField] private GameObject _cellPrefab;
 
     void Start()
     {
-        initCell();
-    }
-
-    void Update()
-    {
-
+        initCells();
     }
     
-    private void initCell()
+    private void initCells()
     {
-        _boardGridLayoutGroup.constraintCount = _boardCell;
-        for(int i = 0; i < _boardCell; i++)
+        int size = GameController.Instance.CellQuantity;
+        _boardGridLayoutGroup.constraintCount = size;
+
+        for(int i = 0; i < size; i++)
         {
-            for(int j = 0; j < _boardCell; j++)
+            for(int j = 0; j < size; j++)
             {
-                Instantiate(_cell, _boardTransform.position, Quaternion.identity, _boardTransform);
+                GameObject cellObj = Instantiate(_cellPrefab, _boardTransform.position, Quaternion.identity, _boardTransform);
+                Cell cell = cellObj.GetComponent<Cell>();
+                cell.initXY(i, j);
             }
         }
     }
