@@ -36,7 +36,6 @@ public class Cell : MonoBehaviour
     {
         if (_isMarket) return;
         int value = GameController.Instance.GetTurn % 2 == 0 ? 1 : 2;
-        Debug.LogWarning(value);
         GameController.Instance.SetCell(_x, _y, value);
         setMark(value);
         //Debug.Log($"Postion {_x},{_y}");

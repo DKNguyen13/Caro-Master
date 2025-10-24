@@ -1,5 +1,7 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameController : Singleton <GameController>
 {
@@ -7,12 +9,15 @@ public class GameController : Singleton <GameController>
     [SerializeField] private int[,] _board;
     [SerializeField] private int _turn = 0;
 
+    [Header("UI")]
     [SerializeField] private TextMeshProUGUI _turnText;
+    [SerializeField] private Button _loadMenuBtn;
 
     void Start()
     {
-        InitBoard();
+        initBoard();
         SetTurnText();
+        handleOnClick();
     }
 
     void Update()
@@ -21,7 +26,7 @@ public class GameController : Singleton <GameController>
     }
 
     #region Init board
-    private void InitBoard()
+    private void initBoard()
     {
         _board = new int[_cellQuantity, _cellQuantity];
         for (int x = 0; x < _cellQuantity; x++)
@@ -61,6 +66,20 @@ public class GameController : Singleton <GameController>
     public void SetTurnText()
     {
         _turnText.text = "Turn " + _turn;
+    }
+    #endregion
+
+    #region On click
+    public void handleOnClick()
+    {
+        if (_loadMenuBtn)
+        {
+            _loadMenuBtn.onClick.AddListener(() => SceneManager.LoadScene("MenuScene"));
+        }
+        else
+        {
+            Debug.LogError("Load menu scene error");
+        }
     }
     #endregion
 
