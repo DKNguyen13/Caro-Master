@@ -83,6 +83,59 @@ public class GameController : Singleton <GameController>
     }
     #endregion
 
+    #region Check Win
+    public bool CheckWin(int x, int y, int player)
+    {
+        Vector2Int[] dirs = new Vector2Int[]
+        {
+        new Vector2Int(1, 0),   // ngang
+        new Vector2Int(0, 1),   // dọc
+        new Vector2Int(1, 1),   // chéo xuống phải
+        new Vector2Int(1, -1),  // chéo lên phải
+        };
+
+        foreach (var dir in dirs)
+        {
+            int count = 1;
+            bool blockedA = false;
+            bool blockedB = false;
+
+            int nx = x + dir.x;
+            int ny = y + dir.y;
+            while (InBoard(nx, ny) && _board[nx, ny] == player)
+            {
+                count++;
+                nx += dir.x;
+                ny += dir.y;
+            }
+            if (InBoard(nx, ny) && _board[nx, ny] != 0) blockedA = true;
+
+            nx = x - dir.x;
+            ny = y - dir.y;
+            while (InBoard(nx, ny) && _board[nx, ny] == player)
+            {
+                count++;
+                nx -= dir.x;
+                ny -= dir.y;
+            }
+            if (InBoard(nx, ny) && _board[nx, ny] != 0) blockedB = true;
+
+            if (count >= 5 && !(blockedA && blockedB))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool InBoard(int x, int y)
+    {
+        return x >= 0 && y >= 0 && x < _cellQuantity && y < _cellQuantity;
+    }
+    #endregion
+
+
     // Getter, setter
     public int CellQuantity => _cellQuantity;
     public int[,] GetBoard => _board;
