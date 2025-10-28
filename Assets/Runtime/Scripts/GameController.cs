@@ -12,6 +12,8 @@ public class GameController : Singleton <GameController>
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI _turnText;
     [SerializeField] private Button _loadMenuBtn;
+    [SerializeField] private GameObject _resultPanel;
+    [SerializeField] private TextMeshProUGUI _resultText;
 
     void Start()
     {
@@ -28,6 +30,7 @@ public class GameController : Singleton <GameController>
     #region Init board
     private void initBoard()
     {
+        _resultPanel.SetActive(false);
         _board = new int[_cellQuantity, _cellQuantity];
         for (int x = 0; x < _cellQuantity; x++)
         {
@@ -122,10 +125,18 @@ public class GameController : Singleton <GameController>
 
             if (count >= 5 && !(blockedA && blockedB))
             {
+                _resultPanel.SetActive(true);
+                if (player == 1)
+                {
+                    _resultText.text = "You Win";
+                }
+                else
+                {
+                    _resultText.text = "You Lose";
+                }
                 return true;
             }
         }
-
         return false;
     }
 

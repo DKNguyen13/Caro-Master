@@ -5,7 +5,7 @@ public class AIController : MonoBehaviour
     public static AIController Instance;
     private const int AI = 2;
     private const int PLAYER = 1;
-    [SerializeField] private const int MAX_DEPTH = 3;
+    private const int MAX_DEPTH = 3;
 
     private void Awake() => Instance = this;
 
