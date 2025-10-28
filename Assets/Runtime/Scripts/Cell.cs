@@ -27,11 +27,11 @@ public class Cell : MonoBehaviour
     {
         _x = x;
         _y = y;
-    } 
+    }
     #endregion
-    
+
     #region handle click
-    
+
     private void handleOnClick()
     {
         if (_isMarked) return;
@@ -39,6 +39,17 @@ public class Cell : MonoBehaviour
         GameController.Instance.SetCell(_x, _y, value);
         setMark(value);
         //Debug.Log($"Postion {_x},{_y}");
+        if (GameController.Instance.CheckWin(_x, _y, value))
+        {
+            Debug.Log("Player WIN!");
+            return;
+        }
+        Invoke(nameof(AIMove), 0.3f);
+    }
+
+    private void AIMove()
+    {
+        AIController.Instance.MakeMove();
     }
 
     public void setMark(int value)
