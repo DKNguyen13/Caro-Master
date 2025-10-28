@@ -6,7 +6,7 @@ public class Cell : MonoBehaviour
     [SerializeField] private Sprite _xIcon; // value = 1
     [SerializeField] private Sprite _oIcon; // value = 2
     [SerializeField] private Image _cellImage;
-    [SerializeField] private bool _isMarket = false;
+    [SerializeField] private bool _isMarked = false;
         
     private Button _cellButton;
     private int _x, _y;
@@ -27,24 +27,34 @@ public class Cell : MonoBehaviour
     {
         _x = x;
         _y = y;
-    } 
+    }
     #endregion
-    
+
     #region handle click
-    
+
     private void handleOnClick()
     {
-        if (_isMarket) return;
+        if (_isMarked) return;
         int value = GameController.Instance.GetTurn % 2 == 0 ? 1 : 2;
-        Debug.LogWarning(value);
         GameController.Instance.SetCell(_x, _y, value);
         setMark(value);
         //Debug.Log($"Postion {_x},{_y}");
+        if (GameController.Instance.CheckWin(_x, _y, value))
+        {
+            Debug.Log("Player WIN!");
+            return;
+        }
+        Invoke(nameof(AIMove), 0.3f);
+    }
+
+    private void AIMove()
+    {
+        AIController.Instance.MakeMove();
     }
 
     public void setMark(int value)
     {
-        _isMarket = true;
+        _isMarked = true;
         if (value == 1)
         {
             _cellImage.sprite = _xIcon;

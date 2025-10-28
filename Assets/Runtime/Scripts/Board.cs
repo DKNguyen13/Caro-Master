@@ -24,6 +24,7 @@ public class Board : MonoBehaviour
                 GameObject cellObj = Instantiate(_cellPrefab, _boardTransform.position, Quaternion.identity, _boardTransform);
                 Cell cell = cellObj.GetComponent<Cell>();
                 cell.initXY(i, j);
+                cellObj.name = $"Cell({i},{j})";
             }
         }
     }
